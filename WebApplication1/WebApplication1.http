@@ -1,0 +1,85 @@
+﻿@WebApplication1_HostAddress = https://localhost:7232
+
+GET {{WebApplication1_HostAddress}}/Persons
+
+###
+
+PUT {{WebApplication1_HostAddress}}/Persons/1
+Content-Type: application/json
+
+{
+    "name": "John Doe updated",
+    "companies": [
+      {
+        "id": 1,
+        "companyId": 1,
+        "name": "Acme Corp updated",
+        "fromDate": "2020-01-01T00:00:00",
+        "toDate": null,
+        "isCurrent": null,
+        "concurrencyToken": "AAAAAAAAD6U="
+      },
+      {
+        "id": 2,
+        "companyId": 2,
+        "name": "Globex Inc",
+        "fromDate": "2020-01-01T00:00:00",
+        "toDate": null,
+        "isCurrent": null,
+        "concurrencyToken": "AAAAAAAAD6Y="
+      }
+    ],
+    "concurrencyToken": "AAAAAAAAD6M="
+  }
+
+###
+
+GET {{WebApplication1_HostAddress}}/Companies
+
+###
+
+POST {{WebApplication1_HostAddress}}/Companies
+Content-Type: application/json
+
+{
+    "name": "Added company",
+    "fromDate": "2020-01-01T00:00:00",
+    "toDate": null
+    }
+###
+
+PUT {{WebApplication1_HostAddress}}/Persons/1
+Content-Type: application/json
+
+{
+    "name": "John Doe updated",
+    "companies": [
+      {
+        "id": 1,
+        "companyId": 1,
+        "name": "Acme Corp updated",
+        "fromDate": "2020-01-01T00:00:00",
+        "toDate": null,
+        "isCurrent": null,
+        "concurrencyToken": "AAAAAAAAD6U="
+      },
+      {
+        "id": 2,
+        "companyId": 2,
+        "name": "Globex Inc",
+        "fromDate": "2020-01-01T00:00:00",
+        "toDate": null,
+        "isCurrent": null,
+        "concurrencyToken": "AAAAAAAAD6Y="
+      },
+      {
+        "id": 3,
+        "companyId": 3,
+        "name": "Added company",
+        "fromDate": "2020-01-01T00:00:00",
+        "toDate": null,
+        "concurrencyToken": "AAAAAAAAD6c="
+      }
+    ],
+    "concurrencyToken": "AAAAAAAAD6M="
+  }
