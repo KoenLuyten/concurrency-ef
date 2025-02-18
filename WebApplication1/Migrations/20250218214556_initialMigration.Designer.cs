@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20250218203401_initialMigration")]
+    [Migration("20250218214556_initialMigration")]
     partial class initialMigration
     {
         /// <inheritdoc />
@@ -51,13 +51,13 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyToken = new byte[] { 15, 180, 50, 178, 78, 33, 177, 74, 133, 209, 248, 231, 54, 5, 139, 67 },
+                            ConcurrencyToken = new byte[] { 67, 203, 109, 46, 25, 99, 181, 71, 148, 73, 212, 175, 102, 56, 254, 94 },
                             Name = "Acme Corp"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyToken = new byte[] { 91, 184, 221, 196, 32, 15, 160, 71, 155, 108, 177, 60, 122, 119, 58, 174 },
+                            ConcurrencyToken = new byte[] { 65, 11, 181, 255, 104, 107, 68, 69, 187, 153, 78, 196, 249, 153, 171, 53 },
                             Name = "Globex Inc"
                         });
                 });
@@ -89,13 +89,13 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyToken = new byte[] { 65, 82, 148, 203, 159, 50, 78, 66, 152, 71, 128, 7, 70, 144, 121, 206 },
+                            ConcurrencyToken = new byte[] { 79, 225, 194, 211, 60, 187, 1, 65, 139, 128, 156, 221, 44, 147, 139, 13 },
                             Name = "John Doe"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyToken = new byte[] { 192, 251, 240, 56, 199, 184, 69, 65, 166, 147, 175, 151, 91, 46, 220, 174 },
+                            ConcurrencyToken = new byte[] { 203, 76, 6, 2, 152, 234, 221, 72, 180, 138, 42, 183, 154, 56, 68, 248 },
                             Name = "Jane Smith"
                         });
                 });
@@ -139,7 +139,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 1,
                             CompanyId = 1,
-                            ConcurrencyToken = new byte[] { 209, 172, 197, 34, 241, 178, 69, 65, 172, 156, 98, 61, 145, 254, 245, 6 },
+                            ConcurrencyToken = new byte[] { 49, 230, 138, 128, 185, 225, 136, 77, 182, 44, 4, 29, 89, 29, 11, 190 },
                             FromDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PersonId = 1
                         },
@@ -147,7 +147,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 2,
                             CompanyId = 2,
-                            ConcurrencyToken = new byte[] { 106, 240, 51, 2, 253, 188, 113, 74, 166, 212, 164, 178, 9, 37, 184, 210 },
+                            ConcurrencyToken = new byte[] { 121, 31, 19, 74, 42, 133, 107, 75, 162, 207, 243, 37, 140, 68, 66, 22 },
                             FromDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             PersonId = 1
                         });

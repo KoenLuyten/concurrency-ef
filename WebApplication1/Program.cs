@@ -60,10 +60,11 @@ app.MapPut("/Persons/{id}", async (MyDbContext context, int id, PersonDto person
     }
     person.Name = personDto.Name;
     person.ConcurrencyToken = personDto.ConcurrencyToken;
-    // update companies
+    
     foreach (var companyDto in personDto.Companies)
     {
         var personCompany = person.PersonCompanies.FirstOrDefault(x => x.Id == companyDto.Id);
+        // add new companies to person
         if (personCompany == null)
         {
             person.PersonCompanies.Add(new PersonCompany
@@ -73,6 +74,7 @@ app.MapPut("/Persons/{id}", async (MyDbContext context, int id, PersonDto person
                 ToDate = companyDto.ToDate
             });
         }
+        // update existing companies
         else
         {
             personCompany.FromDate = companyDto.FromDate;
@@ -80,6 +82,15 @@ app.MapPut("/Persons/{id}", async (MyDbContext context, int id, PersonDto person
             personCompany.CompanyId = companyDto.CompanyId;
             personCompany.Company.Name = companyDto.Name;
             personCompany.ConcurrencyToken = companyDto.ConcurrencyToken;
+        }
+    }
+
+    // remove personcompany from person when company not in dto
+    foreach (var personCompany in person.PersonCompanies.ToList())
+    {
+        if (!personDto.Companies.Any(x => x.Id == personCompany.Id))
+        {
+            context.Remove(personCompany);
         }
     }
 

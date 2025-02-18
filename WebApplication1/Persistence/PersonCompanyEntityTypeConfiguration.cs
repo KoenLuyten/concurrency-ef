@@ -12,7 +12,8 @@ namespace WebApplication1.Persistence
 
             builder.HasOne(x => x.Company)
                 .WithMany()
-                .HasForeignKey(x => x.CompanyId);
+                .HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.ConcurrencyToken).IsRowVersion();
         }
