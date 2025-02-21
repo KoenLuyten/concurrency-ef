@@ -14,6 +14,6 @@
 
         public bool? IsCurrent { get; set; } = null;
 
-        public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
+        public byte[]? ConcurrencyToken { get; set; } = Array.Empty<byte>();
     }
 }

@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var msSqlContainer = new MsSqlBuilder()
     .WithPortBinding(666, 1433)
     .Build();
+
 await msSqlContainer.StartAsync();
 Console.WriteLine($"Connectionstring: {msSqlContainer.GetConnectionString()}");
 
@@ -54,13 +55,14 @@ app.MapPut("/Persons/{id}", async (MyDbContext context, int id, PersonDto person
         .ThenInclude(pc => pc.Company)
         .AsNoTracking()
         .FirstOrDefaultAsync(x => x.Id == id);
+
     if (person == null)
     {
         return Results.NotFound();
     }
     person.Name = personDto.Name;
     person.ConcurrencyToken = personDto.ConcurrencyToken;
-    
+
     foreach (var companyDto in personDto.Companies)
     {
         var personCompany = person.PersonCompanies.FirstOrDefault(x => x.Id == companyDto.Id);
@@ -106,6 +108,73 @@ app.MapPut("/Persons/{id}", async (MyDbContext context, int id, PersonDto person
     }
 });
 
+// only update assignments of companies to persons
+app.MapPost("/Persons/{id}/Companies", async (MyDbContext context, int id, PersonCompaniesDto personCompaniesDto) =>
+{
+    var person = await context.Persons
+        .Include(x => x.PersonCompanies)
+        .AsNoTracking()
+        .FirstOrDefaultAsync(x => x.Id == id);
+
+    if (person == null)
+    {
+        return Results.NotFound($"Person with Id {id}");
+    }
+
+    person.ConcurrencyToken = personCompaniesDto.ConcurrencyToken;
+
+    var personState = context.Entry(person).State;
+
+    foreach (var companyId in personCompaniesDto.CompanyIds)
+    {
+        var company = await context.Companies.FirstOrDefaultAsync(x => x.Id == companyId);
+        if (company == null)
+        {
+            return Results.NotFound($"Company with Id {companyId}");
+        }
+
+        // ne need to add company if already exists
+        if (person.PersonCompanies.Any(x => x.CompanyId == companyId))
+        {
+            continue;
+        }
+
+        // add company to person
+        var newPersonCompany = new PersonCompany
+        {
+            CompanyId = companyId
+        };
+
+        person.PersonCompanies.Add(newPersonCompany);
+
+        //context.Entry(newPersonCompany).State = EntityState.Added;
+
+        person.ConcurrencyToken = personCompaniesDto.ConcurrencyToken;
+    }
+
+    // remove company from person when not in dto
+    foreach (var personCompany in person.PersonCompanies.ToList())
+    {
+        if (!personCompaniesDto.CompanyIds.Contains(personCompany.CompanyId))
+        {
+            context.Remove(personCompany);
+            //context.Entry(personCompany).State = EntityState.Deleted;
+        }
+    }
+
+    try
+    {
+        //context.Entry(person).State = EntityState.Modified;
+        context.Update(person);
+        await context.SaveChangesAsync();
+        return Results.Ok();
+    }
+    catch (DbUpdateConcurrencyException ex)
+    {
+        return Results.Conflict(new { message = "Concurrency conflict occurred.", details = ex.Message });
+    }
+});
+
 // get endpoint for companies
 app.MapGet("/Companies", async (MyDbContext context) =>
 {
@@ -124,6 +193,7 @@ app.MapPost("/Companies", async (MyDbContext context, CompanyDto companyDto) =>
     await context.SaveChangesAsync();
     return Results.Created($"/Companies/{company.Id}", company);
 });
+
 
 using (var context = new MyDbContext(builder.Services.BuildServiceProvider()
     .GetRequiredService<DbContextOptions<MyDbContext>>()))

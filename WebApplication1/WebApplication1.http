@@ -58,7 +58,7 @@ Content-Type: application/json
         "name": "Acme Corp updated again",
         "fromDate": "2020-01-01T00:00:00",
         "toDate": null,
-        "concurrencyToken": "AAAAAAAAD6U="
+        "concurrencyToken": "AAAAAAAAD6k="
       },
       {
         "companyId": 3,
@@ -66,5 +66,25 @@ Content-Type: application/json
         "toDate": null
       }
     ],
-    "concurrencyToken": "AAAAAAAAD6M="
+    "concurrencyToken": "AAAAAAAAD6s="
   }
+
+###
+
+POST {{WebApplication1_HostAddress}}/Persons/2/Companies
+Content-Type: application/json
+
+{
+  "companyIds": [1, 2],
+  "concurrencyToken": "AAAAAAAAD6Q="
+}
+
+###
+
+POST {{WebApplication1_HostAddress}}/Persons/2/Companies
+Content-Type: application/json
+
+{
+  "companyIds": [1],
+  "concurrencyToken": "AAAAAAAAD6k="
+}
